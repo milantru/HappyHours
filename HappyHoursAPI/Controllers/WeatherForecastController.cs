@@ -1,3 +1,5 @@
+using HappyHoursData;
+using HappyHoursData.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HappyHoursAPI.Controllers
