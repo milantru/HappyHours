@@ -16,9 +16,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-#if !DEBUG // TODO: This if is planned to be removed.
 app.UseHttpsRedirection();
-#endif
 
 app.UseAuthorization();
 

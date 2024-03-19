@@ -3,9 +3,7 @@ using Android.Runtime;
 
 namespace HappyHoursMobile
 {
-#if DEBUG // TODO: This if is planned to be removed.
-    [Application(UsesCleartextTraffic = true)]
-#endif
+    [Application]
     public class MainApplication : MauiApplication
     {
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)

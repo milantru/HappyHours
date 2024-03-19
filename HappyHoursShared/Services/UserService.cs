@@ -13,6 +13,13 @@ namespace HappyHoursShared.Services
 {
     public class UserService
     {
+        private HttpClientFactory httpClientFactory;
+
+		public UserService(HttpClientFactory httpClientFactory)
+        {
+            this.httpClientFactory = httpClientFactory;
+        }
+
         public async Task<User[]> GetUsersAsync()
         {
             /* Android emulators do not run on the local machine 
@@ -20,7 +27,7 @@ namespace HappyHoursShared.Services
              * with the local machine... 
              * More here: https://learn.microsoft.com/en-us/aspnet/core/mobile/native-mobile-backend?view=aspnetcore-8.0#features */
             var baseUrl = DeviceInfo.Platform == DevicePlatform.Android ?
-                "http://10.0.2.2:5230" :
+				"https://10.0.2.2:7059" :
                 "https://localhost:7059";
             var requestUri = new Uri(baseUrl + "/Users");
 
@@ -31,7 +38,7 @@ namespace HappyHoursShared.Services
 
         private async Task<T?> GetAsync<T>(Uri requestUri) where T : class
         {
-            using var client = new HttpClient();
+            using var client = httpClientFactory.CreateHttpClient();
 
             var res = await client.GetAsync(requestUri);
             if (!res.IsSuccessStatusCode)

@@ -1,4 +1,5 @@
 ﻿using HappyHoursShared.Extensions;
+using HappyHoursShared.Services;
 using Microsoft.Extensions.Logging;
 
 namespace HappyHoursMobile
@@ -17,6 +18,12 @@ namespace HappyHoursMobile
 
             builder.Services.AddMauiBlazorWebView();
 
+            builder.Services.AddSingleton<HttpClientFactory>(_ =>
+            {
+                var createHandler = HttpsClientHandlerService.GetPlatformSpecificMessageHandler;
+
+				return new(createHandler);
+            });
             builder.Services.AddHappyHoursServices();
 
 #if DEBUG

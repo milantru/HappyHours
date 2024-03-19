@@ -1,4 +1,5 @@
 using HappyHoursShared.Extensions;
+using HappyHoursShared.Services;
 using HappyHoursWeb.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddSingleton<HttpClientFactory>();
 builder.Services.AddHappyHoursServices();
 
 var app = builder.Build();
@@ -19,9 +21,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-#if !DEBUG // TODO: This is planned to be removed.
 app.UseHttpsRedirection();
-#endif
 
 app.UseStaticFiles();
 app.UseAntiforgery();
