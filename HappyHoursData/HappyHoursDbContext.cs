@@ -21,9 +21,8 @@ namespace HappyHoursData
                             .AddUserSecrets<HappyHoursDbContext>()
                             .Build();
             var connectionString = config.GetConnectionString("DefaultConnection");
-            var serverVersion = ServerVersion.AutoDetect(connectionString);
 
-            optionsBuilder.UseMySql(connectionString, serverVersion);
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }
