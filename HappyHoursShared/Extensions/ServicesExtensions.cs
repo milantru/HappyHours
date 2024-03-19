@@ -12,7 +12,7 @@ namespace HappyHoursShared.Extensions
     {
         public static void AddHappyHoursServices(this IServiceCollection services)
         {
-            services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<UserService>();
         }
     }
 }

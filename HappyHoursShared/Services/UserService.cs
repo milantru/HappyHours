@@ -11,9 +11,9 @@ using static System.Net.WebRequestMethods;
 
 namespace HappyHoursShared.Services
 {
-    public class WeatherForecastService
+    public class UserService
     {
-        public async Task<WeatherForecast[]> GetWeatherForecastsAsync()
+        public async Task<User[]> GetUsersAsync()
         {
             /* Android emulators do not run on the local machine 
              * and use a loopback IP (10.0.2.2) to communicate 
@@ -22,11 +22,11 @@ namespace HappyHoursShared.Services
             var baseUrl = DeviceInfo.Platform == DevicePlatform.Android ?
                 "http://10.0.2.2:5230" :
                 "https://localhost:7059";
-            var requestUri = new Uri(baseUrl + "/WeatherForecast");
+            var requestUri = new Uri(baseUrl + "/Users");
 
-            var forecasts = await GetAsync<WeatherForecast[]>(requestUri);
+            var users = await GetAsync<User[]>(requestUri);
 
-            return forecasts ?? Array.Empty<WeatherForecast>();
+            return users ?? Array.Empty<User>();
         }
 
         private async Task<T?> GetAsync<T>(Uri requestUri) where T : class
@@ -40,8 +40,13 @@ namespace HappyHoursShared.Services
             }
 
             var serializedContent = await res.Content.ReadAsStringAsync();
+            var jsonSerializerOptions = new JsonSerializerOptions()
+            {
+                AllowTrailingCommas = true,
+                PropertyNameCaseInsensitive = true,
+            };
 
-            return JsonSerializer.Deserialize<T>(serializedContent);
+            return JsonSerializer.Deserialize<T>(serializedContent, jsonSerializerOptions);
         }
     }
 }
