@@ -11,9 +11,14 @@ namespace HappyHoursData
 {
     public class HappyHoursDbContext : DbContext
     {
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Business> Businesses { get; set; }
+        public DbSet<BusinessBranch> BusinessBranches { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Event> Events { get; set; }
         public DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
 
@@ -24,5 +29,17 @@ namespace HappyHoursData
 
             optionsBuilder.UseSqlServer(connectionString);
         }
-    }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.Entity<BusinessBranch>()
+		        .HasMany(bb => bb.Customers)
+		        .WithMany(c => c.FavouriteBranches)
+		        .UsingEntity(
+			        l => l.HasOne(typeof(Customer)).WithMany().OnDelete(DeleteBehavior.Restrict),
+			        r => r.HasOne(typeof(BusinessBranch)).WithMany().OnDelete(DeleteBehavior.Restrict));
+		}
+	}
 }
